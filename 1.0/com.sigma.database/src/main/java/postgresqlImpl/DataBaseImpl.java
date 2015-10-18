@@ -6,7 +6,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
+import org.postgresql.Driver;
 import javax.swing.JOptionPane;
 
 import postgresql.DataBase;
@@ -35,14 +35,14 @@ public class DataBaseImpl implements DataBase{
 	public int init()
 	{
 		System.out.println("--PostgreSQL JDBC Connection Testing --");
-		/*try {
+		try {
 			Class.forName("org.postgresql.Driver");
 		} catch (ClassNotFoundException e) {
 			System.out.println("Include PostgreSQL JDBC Driver in your library path!");
 			e.printStackTrace();
-			return null;
+			return -2;
 		}
-		System.out.println("PostgreSQL JDBC Driver Registered!");*/
+		System.out.println("PostgreSQL JDBC Driver Registered!");
 
 		try {
 			/*int ind = url.indexOf("/");

@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Bnd-LastModified: 1445179000211
+Bnd-LastModified: 1445186111007
 Build-Jdk: 1.8.0_25
 Built-By: NikitaNB
 Bundle-Activator: postgresqlImpl.Activator
@@ -9,7 +9,7 @@ Bundle-Name: com.sigma.database Bundle
 Bundle-SymbolicName: com.sigma.database
 Bundle-Version: 1.0.0.SNAPSHOT
 Created-By: Apache Maven Bundle Plugin
-Embed-Dependency: org.postgres.driver
+Embed-Dependency: org.postgresql.Driver
 Export-Package: postgresql;version="1.0.0";uses:="org.osgi.framework",po
  stgresqlImpl;version="1.0.0";uses:="org.osgi.framework,postgresql"
 Import-Package: org.osgi.framework;version="1.3.0"

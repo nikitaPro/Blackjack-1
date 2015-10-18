@@ -32,9 +32,14 @@ public class Activator implements BundleActivator {
         helloServiceTracker= new HelloServiceTracker(context);
         helloServiceTracker.open();
         DataBase db = (DataBase)helloServiceTracker.getService();
-        System.out.println("create table!!!");
+
       try{
-    	  db.executeUpdate("CREATE TABLE player (ID_P SERIAL PRIMARY KEY , name varchar, pass varchar, nick varchar);");
+    	  if(db.init()==0){
+    	        System.out.println("create table!!!");
+    	        db.executeUpdate("CREATE TABLE player (ID_P SERIAL PRIMARY KEY, name varchar, pass varchar, nick varchar);");
+    	  }
+    	  else
+    		  System.out.println("Cap! We have a problem with connection DB");
       }
       catch(SQLException e){
     	  e.printStackTrace();
