@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1445446865595
+Build-Jdk: 1.8.0_25
+Built-By: NikitaNB
+Bundle-Activator: postgresqlImpl.Activator
+Bundle-Description: com.sigma.database OSGi bundle project.
+Bundle-ManifestVersion: 2
+Bundle-Name: com.sigma.database Bundle
+Bundle-SymbolicName: com.sigma.database
+Bundle-Version: 1.0.0.SNAPSHOT
+Created-By: Apache Maven Bundle Plugin
+Embed-Dependency: org.postgresql
+Export-Package: postgresql;version="1.0.0";uses:="org.osgi.framework",po
+ stgresqlImpl;version="1.0.0";uses:="org.osgi.framework,postgresql"
+Import-Package: org.osgi.framework;version="1.3.0",org.postgresql;versio
+ n="9.1.901"
+Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.5))"
+Tool: Bnd-2.4.1.201501161923
