@@ -13,7 +13,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import user_player.Player;
-
+/**
+ * Don't Work!!!
+ * @deprecated
+ */
 public class PlayerForm extends JFrame {
 
 	private Player player= null;

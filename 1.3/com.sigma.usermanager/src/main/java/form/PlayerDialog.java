@@ -6,6 +6,7 @@ package form;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 
 import java.awt.GridBagLayout;
 
@@ -41,11 +42,12 @@ public class PlayerDialog extends JFrame {
 	 */
 	private final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 	private JTextField logEmailField;
-	private JTextField logPassField;
+	private JPasswordField logPassField;
 	private JTextField regEmailField;
-	private JTextField regPassField;
+	private JPasswordField regPassField;
 	private JTextField regNickField;
 	private Player player;
+	
 	public PlayerDialog(Player pl) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Toolkit tk = Toolkit.getDefaultToolkit();
@@ -89,7 +91,7 @@ public class PlayerDialog extends JFrame {
 		gbc_lblPassword.gridy = 4;
 		panel.add(lblPassword, gbc_lblPassword);
 		
-		logPassField = new JTextField();
+		logPassField = new JPasswordField();
 		GridBagConstraints gbc_logPassField = new GridBagConstraints();
 		gbc_logPassField.insets = new Insets(20, 0, 5, 0);
 		gbc_logPassField.fill = GridBagConstraints.HORIZONTAL;
@@ -102,9 +104,19 @@ public class PlayerDialog extends JFrame {
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println(logEmailField.getText());
-				if (logEmailField.getText().length() > 0 && logPassField.getText().length() > 0) {
-					player.login(logEmailField.getText(), logPassField.getText());
+				//System.out.println(logEmailField.getText());
+				if (logEmailField.getText().length() > 0 && logPassField.getPassword().length > 0) {
+					try{
+					player.login(logEmailField.getText(),  logPassField.getPassword());
+					logPassField.setText("");
+					JOptionPane.showMessageDialog(null, "Welcome, "+player.getNick(), "Success!",
+							JOptionPane.PLAIN_MESSAGE);
+					}
+					catch(java.lang.SecurityException e3){
+						e3.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Invalid password or E-mail!", "Warning",
+								JOptionPane.WARNING_MESSAGE);
+					}
 					
 				} else
 					JOptionPane.showMessageDialog(null, "One or more field is empty!", "Warning",
@@ -128,7 +140,7 @@ public class PlayerDialog extends JFrame {
 		
 		JLabel lblPleasEnterNext = new JLabel("Please enter next data: ");
 		GridBagConstraints gbc_lblPleasEnterNext = new GridBagConstraints();
-		gbc_lblPleasEnterNext.insets = new Insets(30, 0, 5, 5);
+		gbc_lblPleasEnterNext.insets = new Insets(20, 0, 5, 5);
 		gbc_lblPleasEnterNext.gridx = 2;
 		gbc_lblPleasEnterNext.gridy = 1;
 		panel_1.add(lblPleasEnterNext, gbc_lblPleasEnterNext);
@@ -156,7 +168,7 @@ public class PlayerDialog extends JFrame {
 		gbc_lblPassword_1.gridy = 3;
 		panel_1.add(lblPassword_1, gbc_lblPassword_1);
 		
-		regPassField = new JTextField();
+		regPassField = new JPasswordField();
 		GridBagConstraints gbc_regPassField = new GridBagConstraints();
 		gbc_regPassField.insets = new Insets(0, 0, 5, 0);
 		gbc_regPassField.fill = GridBagConstraints.HORIZONTAL;
@@ -193,29 +205,43 @@ public class PlayerDialog extends JFrame {
 		btnRegistreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//System.out.println(textEmail.get);
-				if ((regEmailField.getText().length() > 0) && (regPassField.getText().length() > 0)) {
-					System.out.println(regEmailField.getText()+"  "+regPassField.getText());
-					String nick;
-					if (regNickField.getText().length() == 0)
-						nick = "Player1"; // Generate nick for player
+				if ((regEmailField.getText().length() > 0) && (regPassField.getPassword().length > 0)) {
+					//System.out.println(regEmailField.getText()+"  "+regPassField.getText());
+					String nick=null;
+					if (regNickField.getText().length() == 0){
+						 // Generate nick for player
+						try{
+						int s = regEmailField.getText().indexOf('@');
+						nick = regEmailField.getText().substring(0,s);
+						}
+						catch(Exception e1){
+						}
+					}
 					else
 						nick = regNickField.getText();
-					System.out.println(nick);
+					//System.out.println(nick);
 					/*
 					 * Check the entered data
 					 */
-					switch (player.registr(regEmailField.getText(), regPassField.getText(), nick)) {
+					switch (player.registr(regEmailField.getText(), regPassField.getPassword(), nick)) {
 					case -1:
-						JOptionPane.showMessageDialog(null, "E-mail ins not correct!", "Warning",
-								JOptionPane.WARNING_MESSAGE);
+						JOptionPane.showMessageDialog(null, "E-mail isn't correct!", "Error",
+								JOptionPane.ERROR_MESSAGE);
 						break;
 					case -2:
-						JOptionPane.showMessageDialog(null, "Password must have more than 5 symbol!", "Warning",
-								JOptionPane.WARNING_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Password must have more than 5 symbol!", "Error",
+								JOptionPane.ERROR_MESSAGE);
+						break;
+					case -3:
+						JOptionPane.showMessageDialog(null, "E-mail already exist", "Error",
+								JOptionPane.ERROR_MESSAGE);
 						break;
 					case 0:
 						JOptionPane.showMessageDialog(null, "Registration success!", "Congratulations",
 								JOptionPane.PLAIN_MESSAGE);
+						regEmailField.setText(null);
+						regNickField.setText(null);
+						regPassField.setText(null);
 						break;
 						//PlayerForm.this.setVisible(false);
 						//PlayerForm.this.dispose();
@@ -224,7 +250,7 @@ public class PlayerDialog extends JFrame {
 
 				} else{
 
-					System.out.println(regEmailField.getText()+"  - "+regPassField.getText());
+					System.out.println(regEmailField.getText()+"  - "+regPassField.getPassword().toString());
 					JOptionPane.showMessageDialog(null, "One or more field is empty!", "Warning",
 							JOptionPane.WARNING_MESSAGE);
 				}
