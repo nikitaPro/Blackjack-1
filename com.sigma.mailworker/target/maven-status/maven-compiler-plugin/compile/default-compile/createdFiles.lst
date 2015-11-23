@@ -1,0 +1,4 @@
+mySender\SenderImp.class
+mySender\SenderServiceFactory.class
+mySender\Sender.class
+mySender\Activator.class

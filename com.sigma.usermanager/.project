@@ -2,7 +2,10 @@
 <projectDescription>
   <name>com.sigma.usermanager</name>
   <comment>com.sigma.usermanager OSGi bundle project. NO_M2ECLIPSE_SUPPORT: Project files created with the maven-eclipse-plugin are not supported in M2Eclipse.</comment>
-  <projects/>
+  <projects>
+    <project>com.sigma.database</project>
+    <project>com.sigma.mailworker</project>
+  </projects>
   <buildSpec>
     <buildCommand>
       <name>org.eclipse.jdt.core.javabuilder</name>

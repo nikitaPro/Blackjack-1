@@ -1,2 +1,9 @@
-user_player\Activator.class
-user_player\HelloServiceTracker.class
+userPlayer\Player.class
+form\PlayerDialog$2.class
+main\Main$1.class
+userPlayer\Activator.class
+form\PlayerDialog.class
+form\PlayerDialog$1.class
+main\Main.class
+userPlayer\DBServiceTracker.class
+userPlayer\SenderServiceTracker.class

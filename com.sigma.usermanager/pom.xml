@@ -48,6 +48,11 @@
             <artifactId>com.sigma.database</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.sigma</groupId>
+   			<artifactId>com.sigma.mailworker</artifactId>
+  			<version>1.0-SNAPSHOT</version>
+    </dependency>
     </dependencies>
 
     <build>
@@ -61,14 +66,16 @@
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Bundle-Version>${project.version}</Bundle-Version>
-                        <Bundle-Activator>user_player.Activator</Bundle-Activator>
+                        <Bundle-Activator>userPlayer.Activator</Bundle-Activator>
                         <Export-Package>
                         </Export-Package>
                         <Import-Package>
-                        com.javaworld.sample.helloservice,
-                        com.javaworld.sample.service.impl,
-                         org.osgi.framework;version="1.3.0",
-                        org.osgi.util.tracker;version="1.5.1",
+                        mySender;version="1.0.0",
+ 						postgresql;version="1.0.0",
+ 						postgresqlImpl;version="1.0.0",
+                        org.osgi.framework;version="1.3.0",
+                        org.osgi.util.tracker;version="1.5.1"
+                    
                         </Import-Package>
                     </instructions>
                 </configuration>

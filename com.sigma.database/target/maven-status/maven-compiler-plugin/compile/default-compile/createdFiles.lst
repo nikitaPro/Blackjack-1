@@ -1,4 +1,4 @@
-com\javaworld\sample\helloservice\HelloServiceFactory.class
-com\javaworld\sample\helloservice\HelloService.class
-com\javaworld\sample\service\impl\Activator.class
-com\javaworld\sample\service\impl\HelloServiceImpl.class
+postgresql\DBServiceFactory.class
+postgresqlImpl\Activator.class
+postgresql\DataBase.class
+postgresqlImpl\DataBaseImpl.class
