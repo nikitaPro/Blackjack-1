@@ -52,7 +52,9 @@ public class Activator implements BundleActivator {
 	      System.out.println( context);
 	      if(senderServiceTracker.getTrackingCount()>0)
 	      	System.out.println( snd.getSubject());
-       Main main = new Main(db,snd);
+	      Main.snd=snd;
+	      Main.db=db;
+       Main main = new Main();
     }
     public void stop(BundleContext context) throws Exception {
         System.out.println("Goodbye World!!");

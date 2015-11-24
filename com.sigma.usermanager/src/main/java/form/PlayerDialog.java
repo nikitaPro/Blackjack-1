@@ -21,6 +21,7 @@ import java.awt.Toolkit;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 
+import main.Main;
 import userPlayer.Player;
 
 import java.awt.event.ActionListener;
@@ -202,7 +203,7 @@ public class PlayerDialog extends JFrame {
 			 * Check the entered data
 			 */
 			String ERR = "Error"; 
-			switch (player.registr(regEmailField.getText(), regPassField.getPassword(), regNickField.getText())) {
+			switch (Player.registr(regEmailField.getText(), regPassField.getPassword(), regNickField.getText())) {
 			case -1:
 				JOptionPane.showMessageDialog(null, "E-mail isn't correct!", ERR,
 						JOptionPane.ERROR_MESSAGE);
@@ -238,10 +239,12 @@ public class PlayerDialog extends JFrame {
 	private void login(){
 		if (logEmailField.getText().length() > 0 && logPassField.getPassword().length > 0) {
 			try{
-			player.login(logEmailField.getText(),  logPassField.getPassword());
-			logPassField.setText("");
-			JOptionPane.showMessageDialog(null, "Welcome, "+player.getNick(), "Success!",
-					JOptionPane.PLAIN_MESSAGE);
+				Player player =Player.login(logEmailField.getText(),  logPassField.getPassword());
+				logPassField.setText("");
+				Main.playerList.add(player);
+				JOptionPane.showMessageDialog(this, "Welcome, "+player.getNick(), "Success!",
+						JOptionPane.PLAIN_MESSAGE);
+				player.openTables();
 			} catch(java.lang.SecurityException e3) {
 				e3.printStackTrace();
 				JOptionPane.showMessageDialog(null, "Invalid password or E-mail!", "Warning",

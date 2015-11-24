@@ -11,8 +11,11 @@ import main.Main;
 import mySender.Sender;
 import mySender.SenderImp;
 import postgresql.DataBase;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import form.CasinoFrame;
 /**
  * @author NikitaNB
  *
@@ -20,15 +23,14 @@ import java.util.regex.Pattern;
 public class Player {
 private String mEmail;
 private String mNick;
-private DataBase mDataBase;
-private Pattern pattern;
-private Matcher matcher;
+private static Pattern pattern;
 
 private static final String EMAIL_PATTERN = 
 	"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 	+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-public Player (DataBase db){
-	this.mDataBase=db;
+private Player (String email,String nick){
+	mEmail=email;
+	mNick=nick;
 }
 /** 
  * @return email for this player
@@ -47,33 +49,39 @@ public String getNick(){
  * 
  * @param email - e-mail
  * @param pass - password
- * @return 0 - success; -1 - SecurityException
+ * @return Player instance, and null when SQLException 
  * @throws SecurityException
  */
-public int login(String email,char[] pass){
+public static Player login(String email,char[] pass){
 	if(!checkEmail(email)) throw new SecurityException("Invalid pass or e-mail");
 	ResultSet res;
+	String Nick;
+	String EmailAdr;
 	try {
-		res= mDataBase.getResult("SELECT nick FROM player WHERE email ='"+email+"' AND pass= '"+new String(pass)+"';");
+		res= Main.db.getResult("SELECT nick FROM player WHERE email ='"+email+"' AND pass= '"+new String(pass)+"';");
 		//System.out.println(pass);
 		 Arrays.fill(pass,'-');
 		if(res.next()){
-			mNick=res.getString(1);
-			System.out.println(mNick);
+			Nick=res.getString(1);
+			System.out.println(Nick);
 			//this.pass=pass;
 			pass=null;
-			this.mEmail=email;
+			EmailAdr=email;
 		}
 		else
 			throw new SecurityException("Invalid pass or e-mail");
-		return 0;
+		return new Player(EmailAdr,Nick);
 			
 	} catch (SQLException e) {
-		// TODO Auto-generated catch block
+		System.out.println("There was a database error during login");
 		e.printStackTrace();
-		return -1;
+		return null;
 	}
 	
+}
+public void openTables(){
+	CasinoFrame cf = new CasinoFrame();
+	cf.setVisible(true);
 }
 /**
  * Logs the user in the system and makes an entry in the database.
@@ -86,19 +94,19 @@ public int login(String email,char[] pass){
  * 			-4 - data base error
  * 			 0 - success 
  */
-public int registr(String email,char[] pass,String nick){
+public static int registr(String email,char[] pass,String nick){
 	if(!checkEmail(email)) return -1;
 	if (nick.length()==0||nick==null){
 		nick=nickGenerator(email);
 	}
 	if(pass.length<6) return -2;// pass has less than 6 character
 	try {
-		ResultSet res= mDataBase.getResult("SELECT nick FROM player WHERE email ='"+email+"';");
+		ResultSet res= Main.db.getResult("SELECT nick FROM player WHERE email ='"+email+"';");
 		if(res.next())
 			return -3;// email already exist
-		mDataBase.executeUpdate("INSERT INTO player VALUES (DEFAULT,'"+email+"','"+new String(pass)+"','"+nick+"');");
+		Main.db.executeUpdate("INSERT INTO player VALUES (DEFAULT,'"+email+"','"+new String(pass)+"','"+nick+"');");
 	} catch (SQLException e) {
-		// TODO Auto-generated catch block
+		System.out.println("A database error occurred during registration");
 		e.printStackTrace();
 		return -4;
 	}
@@ -113,15 +121,15 @@ public int registr(String email,char[] pass,String nick){
  * @param email - e-mail
  * @return -1 - wrong; 0 - success
  */
-public boolean checkEmail(final String hex) {
+private static boolean checkEmail(final String hex) {
 	pattern = Pattern.compile(EMAIL_PATTERN);
-	matcher = pattern.matcher(hex);
+	Matcher matcher = pattern.matcher(hex);
 	return matcher.matches();
 }
 /**
  *  Generate nick for player
  * */
-private String nickGenerator(String email){
+private static String nickGenerator(String email){
 		int s = email.indexOf('@');
 		return email.substring(0,s);
 }

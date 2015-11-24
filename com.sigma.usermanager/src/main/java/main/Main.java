@@ -5,6 +5,7 @@ package main;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.swing.JFrame;
@@ -24,10 +25,10 @@ import userPlayer.Player;
 public class Main  {
 	private Player player;
 	public static Sender snd;
+	public static DataBase db;
+	public static ArrayList<Player> playerList=new ArrayList<Player>();
 	
-	public Main(DataBase db, Sender snd){
-		this.snd=snd;
-		this.player=new Player(db);
+	public Main(){
 		Thread runner = new Thread(){
 			public void run(){
 				PlayerDialog pl = new PlayerDialog(player);
